@@ -10,6 +10,7 @@ import com.fasttrack.android.movies.models.Movie;
 import com.fasttrack.android.movies.views.viewHolders.MovieViewHolder;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by dariomartin on 3/4/17.
@@ -41,7 +42,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MovieViewHolder> {
         return movies.size();
     }
 
-    public void addMovies(ArrayList<Movie> movies) {
+    public void addMovies(List<Movie> movies) {
         this.movies.addAll(movies);
     }
 }

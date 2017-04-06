@@ -8,11 +8,10 @@
     android:orientation="vertical"
     tools:context="com.fasttrack.android.movies.views.MainActivity">
 
-   <android.support.v7.widget.RecyclerView
-       android:id="@+id/moviesRecyclreView"
-       android:layout_width="match_parent"
-       android:layout_height="match_parent"
-       android:background="@color/colorAccent"/>
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/moviesRecyclreView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/navigation"
@@ -20,7 +19,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         android:background="?android:attr/windowBackground"
-        app:menu="@menu/navigation"
-        android:visibility="gone"/>
+        android:visibility="gone"
+        app:menu="@menu/navigation" />
 
 </LinearLayout>

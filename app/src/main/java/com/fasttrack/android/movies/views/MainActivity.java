@@ -15,6 +15,7 @@ import com.fasttrack.android.movies.presenters.MainPresenter;
 import com.fasttrack.android.movies.views.adapters.MoviesAdapter;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements MainView {
 
@@ -69,7 +70,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
 
 
     @Override
-    public void showMovies(ArrayList<Movie> movies) {
+    public void showMovies(List<Movie> movies) {
         adapter.addMovies(movies);
         adapter.notifyDataSetChanged();
     }

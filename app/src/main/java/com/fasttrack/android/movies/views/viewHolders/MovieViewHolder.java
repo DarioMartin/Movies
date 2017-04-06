@@ -7,6 +7,7 @@ import android.widget.TextView;
 
 import com.fasttrack.android.movies.R;
 import com.fasttrack.android.movies.models.Movie;
+import com.fasttrack.android.movies.utils.ImageLoader;
 
 /**
  * Created by dariomartin on 3/4/17.
@@ -14,16 +15,14 @@ import com.fasttrack.android.movies.models.Movie;
 
 public class MovieViewHolder extends RecyclerView.ViewHolder {
 
-    private TextView title;
     private ImageView poster;
 
     public MovieViewHolder(View itemView) {
         super(itemView);
-        title = (TextView) itemView.findViewById(R.id.title);
         poster = (ImageView) itemView.findViewById(R.id.poster);
     }
 
     public void setItem(Movie movie) {
-        title.setText(movie.getTitle());
+        ImageLoader.loadImage(poster.getContext(), movie.getPoster(), poster);
     }
 }

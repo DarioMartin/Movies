@@ -1,9 +1,11 @@
 package com.fasttrack.android.movies.presenters;
 
+import com.fasttrack.android.movies.connections.Controller;
 import com.fasttrack.android.movies.models.Movie;
 import com.fasttrack.android.movies.views.MainView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by dariomartin on 3/4/17.
@@ -18,12 +20,18 @@ public class MainPresenter {
     }
 
     public void getMovies() {
-        ArrayList<Movie> movies = new ArrayList<>();
-        movies.add(new Movie("Peli 1"));
-        movies.add(new Movie("Peli 2"));
-        movies.add(new Movie("Peli 3"));
-        movies.add(new Movie("Peli 4"));
-        movies.add(new Movie("Peli 5"));
-        view.showMovies(movies);
+
+        Controller.getInstance().loadPopularMovies(1, new Controller.RequestCallback<List<Movie>>() {
+            @Override
+            public void onResponse(List<Movie> movies) {
+                view.showMovies(movies);
+
+            }
+
+            @Override
+            public void onFailure(String message) {
+
+            }
+        });
     }
 }

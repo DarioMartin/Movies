@@ -10,6 +10,8 @@ import java.util.ArrayList;
 
 public class Movie {
 
+    private static final String BASE_IMAGE_URL = "http://image.tmdb.org/t/p/";
+
     @SerializedName("adult")
     boolean adultContent;
 
@@ -121,7 +123,7 @@ public class Movie {
     }
 
     public String getPoster() {
-        return poster;
+        return BASE_IMAGE_URL+"/w342/" + poster;
     }
 
     public void setPoster(String poster) {
