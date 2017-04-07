@@ -1,9 +1,12 @@
 package com.fasttrack.android.movies.utils;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
 /**
@@ -12,7 +15,7 @@ import com.squareup.picasso.Picasso;
 
 public class ImageLoader {
 
-    public static void loadImage(Context context, String url, ImageView view){
+    public static void loadImage(final Context context, final String url, final ImageView view) {
         Picasso.with(context).load(url).into(view);
     }
 

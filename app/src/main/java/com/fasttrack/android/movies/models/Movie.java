@@ -123,7 +123,19 @@ public class Movie {
     }
 
     public String getPoster() {
-        return BASE_IMAGE_URL+"/w342/" + poster;
+        return BASE_IMAGE_URL+"/original/" + poster;
+    }
+
+    public String getSmallPoster() {
+        return BASE_IMAGE_URL+"/w92/" + poster;
+    }
+
+    public String getMediumPoster() {
+        return BASE_IMAGE_URL+"/w185/" + poster;
+    }
+
+    public String getBigPoster() {
+        return BASE_IMAGE_URL+"/w500/" + poster;
     }
 
     public void setPoster(String poster) {

@@ -25,7 +25,24 @@ public class MainPresenter {
             @Override
             public void onResponse(List<Movie> movies) {
                 view.showMovies(movies);
+            }
 
+            @Override
+            public void onFailure(String message) {
+
+            }
+        });
+    }
+
+    public void loadMoreItems() {
+
+    }
+
+    public void getMovies(int current_page) {
+        Controller.getInstance().loadPopularMovies(current_page, new Controller.RequestCallback<List<Movie>>() {
+            @Override
+            public void onResponse(List<Movie> movies) {
+                view.showMovies(movies);
             }
 
             @Override

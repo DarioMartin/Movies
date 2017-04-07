@@ -1,20 +1,22 @@
 package com.fasttrack.android.movies.views;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.view.MenuItem;
 import android.view.View;
 
 import com.fasttrack.android.movies.R;
 import com.fasttrack.android.movies.models.Movie;
 import com.fasttrack.android.movies.presenters.MainPresenter;
+import com.fasttrack.android.movies.utils.EndlessRecyclerOnScrollListener;
 import com.fasttrack.android.movies.views.adapters.MoviesAdapter;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements MainView {
@@ -61,9 +63,27 @@ public class MainActivity extends AppCompatActivity implements MainView {
         moviesRecyclerView.setLayoutManager(layoutManager);
 
         adapter = new MoviesAdapter();
+        adapter.setOnItemClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                int position = moviesRecyclerView.indexOfChild(v);
+                Movie movie = adapter.getMovieAtPositon(position);
+                Intent myIntent = new Intent(MainActivity.this, DetailsActivity.class);
+                myIntent.putExtra("title", movie.getTitle()); //Optional parameters
+                MainActivity.this.startActivity(myIntent);
+
+            }
+        });
         moviesRecyclerView.setAdapter(adapter);
 
         presenter = new MainPresenter(this);
+
+        moviesRecyclerView.addOnScrollListener(new EndlessRecyclerOnScrollListener(layoutManager, 10) {
+            @Override
+            public void onLoadMore(int current_page) {
+                presenter.getMovies(current_page);
+            }
+        });
 
         presenter.getMovies();
     }

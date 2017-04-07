@@ -19,6 +19,7 @@ import java.util.List;
 public class MoviesAdapter extends RecyclerView.Adapter<MovieViewHolder> {
 
     private ArrayList<Movie> movies;
+    private View.OnClickListener onItemClickListener;
 
     public MoviesAdapter() {
         this.movies = new ArrayList<>();
@@ -28,6 +29,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MovieViewHolder> {
     @Override
     public MovieViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.movie_card, parent, false);
+        view.setOnClickListener(onItemClickListener);
         MovieViewHolder viewHolder = new MovieViewHolder(view);
         return viewHolder;
     }
@@ -44,5 +46,13 @@ public class MoviesAdapter extends RecyclerView.Adapter<MovieViewHolder> {
 
     public void addMovies(List<Movie> movies) {
         this.movies.addAll(movies);
+    }
+
+    public void setOnItemClickListener(View.OnClickListener onItemClickListener) {
+        this.onItemClickListener = onItemClickListener;
+    }
+
+    public Movie getMovieAtPositon(int position) {
+        return movies.isEmpty() ? null : movies.get(position);
     }
 }
