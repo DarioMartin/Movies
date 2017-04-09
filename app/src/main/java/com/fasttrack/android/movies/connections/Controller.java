@@ -1,5 +1,6 @@
 package com.fasttrack.android.movies.connections;
 
+import com.fasttrack.android.movies.models.MovieImages;
 import com.fasttrack.android.movies.models.Movie;
 import com.fasttrack.android.movies.models.MoviePage;
 import com.google.gson.Gson;
@@ -46,12 +47,12 @@ public class Controller {
     }
 
     public static void loadPopularMovies(int page, final RequestCallback callback) {
-        theMovieDBAPI.loadPopularMovies(page).enqueue(new Callback<MoviePage>() {
+        theMovieDBAPI.getPopularMovies(page).enqueue(new Callback<MoviePage>() {
             @Override
             public void onResponse(Call<MoviePage> call, Response<MoviePage> response) {
-                if(response.code()==200){
+                if (response.code() == 200) {
                     callback.onResponse(response.body().getResults());
-                }else{
+                } else {
                     callback.onFailure(response.message());
                 }
             }
@@ -61,6 +62,25 @@ public class Controller {
 
             }
         });
+    }
+
+    public static void loadMovieImages(String id, final RequestCallback callback) {
+        theMovieDBAPI.getMovieImages(id).enqueue(new Callback<MovieImages>() {
+            @Override
+            public void onResponse(Call<MovieImages> call, Response<MovieImages> response) {
+                if (response.code() == 200) {
+                    callback.onResponse(response.body());
+                } else {
+                    callback.onFailure(response.message());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MovieImages> call, Throwable t) {
+
+            }
+        });
+
     }
 
     public interface RequestCallback<T> {

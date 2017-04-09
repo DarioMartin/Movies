@@ -19,23 +19,34 @@ import java.util.List;
 public class MoviesAdapter extends RecyclerView.Adapter<MovieViewHolder> {
 
     private ArrayList<Movie> movies;
-    private View.OnClickListener onItemClickListener;
+    private PositionClickListener positionClickListener;
 
     public MoviesAdapter() {
         this.movies = new ArrayList<>();
+    }
+
+    public interface PositionClickListener {
+        void itemClicked(int position);
     }
 
 
     @Override
     public MovieViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.movie_card, parent, false);
-        view.setOnClickListener(onItemClickListener);
         MovieViewHolder viewHolder = new MovieViewHolder(view);
         return viewHolder;
     }
 
     @Override
-    public void onBindViewHolder(MovieViewHolder holder, int position) {
+    public void onBindViewHolder(MovieViewHolder holder, final int position) {
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (positionClickListener != null) {
+                    positionClickListener.itemClicked(position);
+                }
+            }
+        });
         holder.setItem(movies.get(position));
     }
 
@@ -48,8 +59,8 @@ public class MoviesAdapter extends RecyclerView.Adapter<MovieViewHolder> {
         this.movies.addAll(movies);
     }
 
-    public void setOnItemClickListener(View.OnClickListener onItemClickListener) {
-        this.onItemClickListener = onItemClickListener;
+    public void setPositionClickListener(PositionClickListener positionClickListener) {
+        this.positionClickListener = positionClickListener;
     }
 
     public Movie getMovieAtPositon(int position) {

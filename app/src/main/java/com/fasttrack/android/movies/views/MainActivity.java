@@ -7,7 +7,6 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SearchView;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -63,17 +62,16 @@ public class MainActivity extends AppCompatActivity implements MainView {
         moviesRecyclerView.setLayoutManager(layoutManager);
 
         adapter = new MoviesAdapter();
-        adapter.setOnItemClickListener(new View.OnClickListener(){
+        adapter.setPositionClickListener(new MoviesAdapter.PositionClickListener() {
             @Override
-            public void onClick(View v) {
-                int position = moviesRecyclerView.indexOfChild(v);
+            public void itemClicked(int position) {
                 Movie movie = adapter.getMovieAtPositon(position);
                 Intent myIntent = new Intent(MainActivity.this, DetailsActivity.class);
-                myIntent.putExtra("title", movie.getTitle()); //Optional parameters
+                myIntent.putExtra("movie", movie);
                 MainActivity.this.startActivity(myIntent);
-
             }
         });
+
         moviesRecyclerView.setAdapter(adapter);
 
         presenter = new MainPresenter(this);

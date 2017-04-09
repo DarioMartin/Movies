@@ -20,7 +20,6 @@ public class MainPresenter {
     }
 
     public void getMovies() {
-
         Controller.getInstance().loadPopularMovies(1, new Controller.RequestCallback<List<Movie>>() {
             @Override
             public void onResponse(List<Movie> movies) {
@@ -32,10 +31,6 @@ public class MainPresenter {
 
             }
         });
-    }
-
-    public void loadMoreItems() {
-
     }
 
     public void getMovies(int current_page) {
