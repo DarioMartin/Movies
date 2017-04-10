@@ -18,12 +18,14 @@ public interface TheMovieDBAPI {
 
     String BASE_URL = "https://api.themoviedb.org/3/";
 
-    @GET("discover/movie/?sort_by=popularity.desc&api_key=" + BuildConfig.THE_MOVIE_DB_API_KEY)
+    @GET("movie/popular?api_key=" + BuildConfig.THE_MOVIE_DB_API_KEY)
     Call<MoviePage> getPopularMovies(@Query("page") int page);
+
+    @GET("movie/top_rated?api_key=" + BuildConfig.THE_MOVIE_DB_API_KEY)
+    Call<MoviePage> getTopRatedMovies(@Query("page") int page);
 
     @GET("movie/{id}/images?api_key=" + BuildConfig.THE_MOVIE_DB_API_KEY)
     Call<MovieImages> getMovieImages(@Path("id") String id);
-
 
 
 }

@@ -2,11 +2,7 @@ package com.fasttrack.android.movies.views;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -20,6 +16,7 @@ public class DetailsActivity extends AppCompatActivity {
 
     private DetailsPresenter presenter;
     private ImageView poster;
+    private TextView title, releaseDate, rating, overview;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,16 +28,22 @@ public class DetailsActivity extends AppCompatActivity {
 
         presenter = new DetailsPresenter(this, movie);
 
-         poster = (ImageView) findViewById(R.id.poster);
+        poster = (ImageView) findViewById(R.id.poster);
+        title = (TextView) findViewById(R.id.title);
+        releaseDate = (TextView) findViewById(R.id.release_date);
+        rating = (TextView) findViewById(R.id.rating);
+        overview = (TextView) findViewById(R.id.overview);
 
-        TextView titleTV = (TextView) findViewById(R.id.title);
-        titleTV.setText(movie.getTitle());
+        title.setText(movie.getTitle());
+        releaseDate.setText(movie.getReleaseDate());
+        rating.setText(String.valueOf(movie.getVoteAverage()));
+        overview.setText(movie.getOverview());
 
         presenter.getMovieImages();
     }
 
     public void showMovieImages(MovieImages movieImages) {
-        if(!movieImages.getBackdrops().isEmpty()){
+        if (!movieImages.getBackdrops().isEmpty()) {
             ImageLoader.loadImage(this, movieImages.getBackdrops().get(0).getURL(), poster);
         }
     }
