@@ -23,6 +23,6 @@ public class MovieViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void setItem(Movie movie) {
-        ImageLoader.loadImage(poster.getContext(), movie.getMediumPoster(), poster);
+        ImageLoader.loadImage(poster.getContext(), movie.getBigPoster(), poster);
     }
 }
