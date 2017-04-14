@@ -11,7 +11,7 @@ import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 /**
- * Created by megamedia on 6/4/17.
+ * Created by dariomartin on 6/4/17.
  */
 
 public interface TheMovieDBAPI {

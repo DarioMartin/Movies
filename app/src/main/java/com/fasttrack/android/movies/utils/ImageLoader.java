@@ -10,7 +10,7 @@ import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
 /**
- * Created by megamedia on 6/4/17.
+ * Created by dariomartin on 6/4/17.
  */
 
 public class ImageLoader {

@@ -2,13 +2,11 @@ package com.fasttrack.android.movies.views;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 
 import com.fasttrack.android.movies.R;
 import com.fasttrack.android.movies.models.Movie;
@@ -20,40 +18,16 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements MainView {
 
+    private MainPresenter.Sorting sorting = MainPresenter.Sorting.POPULAR;
     private RecyclerView moviesRecyclerView;
-
     private MoviesAdapter adapter;
-
     private GridLayoutManager layoutManager;
-
     private MainPresenter presenter;
-
-    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
-            = new BottomNavigationView.OnNavigationItemSelectedListener() {
-
-        @Override
-        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            switch (item.getItemId()) {
-                case R.id.navigation_home:
-                    return true;
-                case R.id.navigation_dashboard:
-                    return true;
-                case R.id.navigation_notifications:
-                    return true;
-            }
-            return false;
-        }
-
-    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-        navigation.setVisibility(View.GONE);
 
         moviesRecyclerView = (RecyclerView) findViewById(R.id.moviesRecyclreView);
         moviesRecyclerView.setHasFixedSize(true);
@@ -76,14 +50,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
 
         presenter = new MainPresenter(this);
 
-        moviesRecyclerView.addOnScrollListener(new EndlessRecyclerOnScrollListener(layoutManager, 10) {
-            @Override
-            public void onLoadMore(int current_page) {
-                presenter.getMovies(current_page);
-            }
-        });
-
-        presenter.getMovies();
+        updateContent();
     }
 
 
@@ -91,5 +58,42 @@ public class MainActivity extends AppCompatActivity implements MainView {
     public void showMovies(List<Movie> movies) {
         adapter.addMovies(movies);
         adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.sorting, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int itemSelected = item.getItemId();
+        MainPresenter.Sorting newSorting = MainPresenter.Sorting.POPULAR;
+        switch (itemSelected) {
+            case R.id.sorting_popular:
+                newSorting = MainPresenter.Sorting.POPULAR;
+                break;
+            case R.id.sorting_top_rated:
+                newSorting = MainPresenter.Sorting.TOP_RATED;
+                break;
+        }
+        if (newSorting != sorting) {
+            sorting = newSorting;
+            updateContent();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void updateContent() {
+        moviesRecyclerView.clearOnScrollListeners();
+        moviesRecyclerView.addOnScrollListener(new EndlessRecyclerOnScrollListener(layoutManager, 10) {
+            @Override
+            public void onLoadMore(int current_page) {
+                presenter.getMovies(current_page, sorting);
+            }
+        });
+        adapter.clearContent();
+        presenter.getMovies(sorting);
     }
 }

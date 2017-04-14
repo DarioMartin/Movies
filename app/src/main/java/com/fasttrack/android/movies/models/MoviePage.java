@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by megamedia on 6/4/17.
+ * Created by dariomartin on 6/4/17.
  */
 
 public class MoviePage {

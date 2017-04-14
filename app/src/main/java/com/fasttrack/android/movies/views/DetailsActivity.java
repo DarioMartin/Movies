@@ -1,12 +1,17 @@
 package com.fasttrack.android.movies.views;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.fasttrack.android.movies.R;
@@ -18,15 +23,18 @@ import com.fasttrack.android.movies.utils.ImageLoader;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 public class DetailsActivity extends AppCompatActivity {
 
     private DetailsPresenter presenter;
-    private ImageView poster, backdrop;
+    private ImageView poster;
     private TextView releaseDate, rating, overview;
     private Movie movie;
+    private CustomPagerAdapter backdropAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +46,7 @@ public class DetailsActivity extends AppCompatActivity {
 
         Toolbar actionBarToolbar = (Toolbar) findViewById(R.id.main_toolbar);
         setSupportActionBar(actionBarToolbar);
-        getSupportActionBar().setTitle(movie.getTitle());
+        getSupportActionBar().setTitle(movie.getOriginalTitle());
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
@@ -51,8 +59,10 @@ public class DetailsActivity extends AppCompatActivity {
 
         presenter = new DetailsPresenter(this, movie);
 
+        ViewPager viewPager = (ViewPager) findViewById(R.id.backdrop_view_pager);
+        backdropAdapter = new CustomPagerAdapter(getApplicationContext());
+        viewPager.setAdapter(backdropAdapter);
         poster = (ImageView) findViewById(R.id.poster);
-        backdrop = (ImageView) findViewById(R.id.backdrop);
         releaseDate = (TextView) findViewById(R.id.release_date);
         rating = (TextView) findViewById(R.id.rating);
         overview = (TextView) findViewById(R.id.overview);
@@ -65,10 +75,8 @@ public class DetailsActivity extends AppCompatActivity {
     }
 
     public void showMovieImages(MovieImages movieImages) {
-        if (!movieImages.getBackdrops().isEmpty()) {
-            ImageLoader.loadImage(this, movieImages.getBackdrops().get(0).getURL(), backdrop);
-        }
-
+        backdropAdapter.addImages(movieImages.getBackdrops());
+        backdropAdapter.notifyDataSetChanged();
         ImageLoader.loadImage(this, movie.getMediumPoster(), poster);
     }
 
@@ -83,5 +91,48 @@ public class DetailsActivity extends AppCompatActivity {
         }
 
         return originDate;
+    }
+
+    class CustomPagerAdapter extends PagerAdapter {
+
+        Context context;
+        LayoutInflater mLayoutInflater;
+        List<MovieImages.TMDBImage> images = new ArrayList<>();
+
+        public CustomPagerAdapter(Context context) {
+            this.context = context;
+            mLayoutInflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        }
+
+        public void addImages(List<MovieImages.TMDBImage> images) {
+            this.images.addAll(images);
+        }
+
+        @Override
+        public int getCount() {
+            return images.size();
+        }
+
+        @Override
+        public boolean isViewFromObject(View view, Object object) {
+            return view == object;
+        }
+
+        @Override
+        public Object instantiateItem(ViewGroup container, int position) {
+            View itemView = mLayoutInflater.inflate(R.layout.pager_item, container, false);
+
+            ImageView imageView = (ImageView) itemView.findViewById(R.id.view_pager_image);
+            ImageLoader.loadImage(context, images.get(position).getURL(), imageView);
+
+            container.addView(itemView);
+
+            return itemView;
+        }
+
+        @Override
+        public void destroyItem(ViewGroup container, int position, Object object) {
+            container.removeView((LinearLayout) object);
+        }
     }
 }

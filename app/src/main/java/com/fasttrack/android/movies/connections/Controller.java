@@ -15,7 +15,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
- * Created by megamedia on 6/4/17.
+ * Created by dariomartin on 6/4/17.
  */
 
 public class Controller {
@@ -26,9 +26,7 @@ public class Controller {
 
     public Controller() {
 
-        Gson gson = new GsonBuilder()
-                .setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
-                .create();
+        Gson gson = new GsonBuilder().create();
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(TheMovieDBAPI.BASE_URL)
@@ -36,7 +34,6 @@ public class Controller {
                 .build();
 
         theMovieDBAPI = retrofit.create(TheMovieDBAPI.class);
-
     }
 
     public static Controller getInstance() {
@@ -48,6 +45,24 @@ public class Controller {
 
     public static void loadPopularMovies(int page, final RequestCallback callback) {
         theMovieDBAPI.getPopularMovies(page).enqueue(new Callback<MoviePage>() {
+            @Override
+            public void onResponse(Call<MoviePage> call, Response<MoviePage> response) {
+                if (response.code() == 200) {
+                    callback.onResponse(response.body().getResults());
+                } else {
+                    callback.onFailure(response.message());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MoviePage> call, Throwable t) {
+
+            }
+        });
+    }
+
+    public static void loadTopRatedMovies(int page, final RequestCallback callback) {
+        theMovieDBAPI.getTopRatedMovies(page).enqueue(new Callback<MoviePage>() {
             @Override
             public void onResponse(Call<MoviePage> call, Response<MoviePage> response) {
                 if (response.code() == 200) {

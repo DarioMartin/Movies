@@ -25,6 +25,10 @@ public class MoviesAdapter extends RecyclerView.Adapter<MovieViewHolder> {
         this.movies = new ArrayList<>();
     }
 
+    public void clearContent() {
+        movies.clear();
+    }
+
     public interface PositionClickListener {
         void itemClicked(int position);
     }
