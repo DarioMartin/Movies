@@ -3,7 +3,6 @@ package com.fasttrack.android.movies.views;
 
 import com.fasttrack.android.movies.models.Movie;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**

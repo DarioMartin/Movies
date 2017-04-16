@@ -4,7 +4,6 @@ import com.fasttrack.android.movies.BuildConfig;
 import com.fasttrack.android.movies.models.MovieImages;
 import com.fasttrack.android.movies.models.MoviePage;
 
-
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Path;

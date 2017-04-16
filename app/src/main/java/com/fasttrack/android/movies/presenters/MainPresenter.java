@@ -4,7 +4,6 @@ import com.fasttrack.android.movies.connections.Controller;
 import com.fasttrack.android.movies.models.Movie;
 import com.fasttrack.android.movies.views.MainView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**

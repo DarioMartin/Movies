@@ -9,10 +9,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.fasttrack.android.movies.R;
+import com.fasttrack.android.movies.adapters.MoviesAdapter;
 import com.fasttrack.android.movies.models.Movie;
 import com.fasttrack.android.movies.presenters.MainPresenter;
 import com.fasttrack.android.movies.utils.EndlessRecyclerOnScrollListener;
-import com.fasttrack.android.movies.adapters.MoviesAdapter;
 
 import java.util.List;
 
