@@ -12,7 +12,7 @@ import com.fasttrack.android.movies.R;
 import com.fasttrack.android.movies.models.Movie;
 import com.fasttrack.android.movies.presenters.MainPresenter;
 import com.fasttrack.android.movies.utils.EndlessRecyclerOnScrollListener;
-import com.fasttrack.android.movies.views.adapters.MoviesAdapter;
+import com.fasttrack.android.movies.adapters.MoviesAdapter;
 
 import java.util.List;
 
@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
         adapter.setPositionClickListener(new MoviesAdapter.PositionClickListener() {
             @Override
             public void itemClicked(int position) {
-                Movie movie = adapter.getMovieAtPositon(position);
+                Movie movie = adapter.getMovieAtPosition(position);
                 Intent myIntent = new Intent(MainActivity.this, DetailsActivity.class);
                 myIntent.putExtra("movie", movie);
                 MainActivity.this.startActivity(myIntent);
