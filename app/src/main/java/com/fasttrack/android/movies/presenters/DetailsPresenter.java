@@ -4,9 +4,6 @@ import com.fasttrack.android.movies.connections.Controller;
 import com.fasttrack.android.movies.models.Movie;
 import com.fasttrack.android.movies.models.MovieImages;
 import com.fasttrack.android.movies.views.DetailsActivity;
-import com.fasttrack.android.movies.views.MainView;
-
-import java.util.List;
 
 /**
  * Created by dariomartin on 3/4/17.

@@ -1,12 +1,9 @@
 package com.fasttrack.android.movies.connections;
 
 import com.fasttrack.android.movies.models.MovieImages;
-import com.fasttrack.android.movies.models.Movie;
 import com.fasttrack.android.movies.models.MoviePage;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;

@@ -1,12 +1,8 @@
 package com.fasttrack.android.movies.utils;
 
 import android.content.Context;
-import android.util.Log;
-import android.view.View;
 import android.widget.ImageView;
 
-import com.squareup.picasso.Callback;
-import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
 /**
