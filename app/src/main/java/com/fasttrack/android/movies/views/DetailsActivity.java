@@ -17,6 +17,8 @@ import android.widget.TextView;
 import com.fasttrack.android.movies.R;
 import com.fasttrack.android.movies.models.Movie;
 import com.fasttrack.android.movies.models.MovieImages;
+import com.fasttrack.android.movies.models.MovieReviews;
+import com.fasttrack.android.movies.models.MovieVideos;
 import com.fasttrack.android.movies.presenters.DetailsPresenter;
 import com.fasttrack.android.movies.utils.ImageLoader;
 
@@ -28,7 +30,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-public class DetailsActivity extends AppCompatActivity {
+public class DetailsActivity extends AppCompatActivity implements DetailsView {
 
     private DetailsPresenter presenter;
     private ImageView poster;
@@ -72,12 +74,24 @@ public class DetailsActivity extends AppCompatActivity {
         overview.setText(movie.getOverview());
 
         presenter.getMovieImages();
+        presenter.getMovieReviews();
+        presenter.getMovieVideos();
     }
 
     public void showMovieImages(MovieImages movieImages) {
         backdropAdapter.addImages(movieImages.getBackdrops());
         backdropAdapter.notifyDataSetChanged();
         ImageLoader.loadImage(this, movie.getMediumPoster(), poster);
+    }
+
+    @Override
+    public void showMovieVideos(List<MovieVideos.TMDBVideo> movieVideos) {
+
+    }
+
+    @Override
+    public void showMovieReviews(List<MovieReviews.TMDBReview> movieReviews) {
+
     }
 
     private String dateFormatter(String originDate, String originFormat, String resultFormat) {

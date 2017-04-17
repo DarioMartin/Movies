@@ -2,6 +2,8 @@ package com.fasttrack.android.movies.connections;
 
 import com.fasttrack.android.movies.models.MovieImages;
 import com.fasttrack.android.movies.models.MoviePage;
+import com.fasttrack.android.movies.models.MovieReviews;
+import com.fasttrack.android.movies.models.MovieVideos;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -93,6 +95,42 @@ public class Controller {
             }
         });
 
+    }
+
+    public void loadMovieReviews(String id, final RequestCallback<MovieReviews> callback) {
+        theMovieDBAPI.getMovieReviews(id).enqueue(new Callback<MovieReviews>() {
+            @Override
+            public void onResponse(Call<MovieReviews> call, Response<MovieReviews> response) {
+                if (response.code() == 200) {
+                    callback.onResponse(response.body());
+                } else {
+                    callback.onFailure(response.message());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MovieReviews> call, Throwable t) {
+
+            }
+        });
+    }
+
+    public void loadMovieVideos(String id, final RequestCallback<MovieVideos> callback) {
+        theMovieDBAPI.getMovieVideos(id).enqueue(new Callback<MovieVideos>() {
+            @Override
+            public void onResponse(Call<MovieVideos> call, Response<MovieVideos> response) {
+                if (response.code() == 200) {
+                    callback.onResponse(response.body());
+                } else {
+                    callback.onFailure(response.message());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MovieVideos> call, Throwable t) {
+
+            }
+        });
     }
 
     public interface RequestCallback<T> {
