@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        moviesRecyclerView = (RecyclerView) findViewById(R.id.moviesRecyclreView);
+        moviesRecyclerView = (RecyclerView) findViewById(R.id.movies_recycler_view);
         moviesRecyclerView.setHasFixedSize(true);
 
         layoutManager = new GridLayoutManager(this, 2);

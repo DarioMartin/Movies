@@ -5,4 +5,5 @@
     <string name="title_activity_details">DetailsActivity</string>
     <string name="relase_date_title">Relase date</string>
     <string name="rating_title">Rating</string>
+    <string name="review_item_title">Review by %s</string>
 </resources>

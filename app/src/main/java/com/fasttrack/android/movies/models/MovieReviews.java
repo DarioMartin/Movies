@@ -29,6 +29,14 @@ total_results: 3
     @SerializedName("results")
     private List<TMDBReview> reviews = new ArrayList<>();
 
+    public List<TMDBReview> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(List<TMDBReview> reviews) {
+        this.reviews = reviews;
+    }
+
     public class TMDBReview {
 
         @SerializedName("id")
@@ -42,13 +50,38 @@ total_results: 3
 
         @SerializedName("url")
         String url;
-    }
 
-    public List<TMDBReview> getReviews() {
-        return reviews;
-    }
+        public String getAuthor() {
+            return author;
+        }
 
-    public void setReviews(List<TMDBReview> reviews) {
-        this.reviews = reviews;
+        public void setAuthor(String author) {
+            this.author = author;
+        }
+
+        public String getContent() {
+            return content;
+        }
+
+        public void setContent(String content) {
+            this.content = content;
+        }
+
+        public String getUrl() {
+            return url;
+        }
+
+        public void setUrl(String url) {
+            this.url = url;
+        }
+
+        public String getId() {
+
+            return id;
+        }
+
+        public void setId(String id) {
+            this.id = id;
+        }
     }
 }

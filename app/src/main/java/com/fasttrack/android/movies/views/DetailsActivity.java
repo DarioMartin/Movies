@@ -15,6 +15,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.fasttrack.android.movies.R;
+import com.fasttrack.android.movies.ReviewsModule;
+import com.fasttrack.android.movies.adapters.ReviewsAdapter;
 import com.fasttrack.android.movies.models.Movie;
 import com.fasttrack.android.movies.models.MovieImages;
 import com.fasttrack.android.movies.models.MovieReviews;
@@ -37,6 +39,7 @@ public class DetailsActivity extends AppCompatActivity implements DetailsView {
     private TextView releaseDate, rating, overview;
     private Movie movie;
     private CustomPagerAdapter backdropAdapter;
+    private ReviewsModule reviewsModule;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +71,7 @@ public class DetailsActivity extends AppCompatActivity implements DetailsView {
         releaseDate = (TextView) findViewById(R.id.release_date);
         rating = (TextView) findViewById(R.id.rating);
         overview = (TextView) findViewById(R.id.overview);
+        reviewsModule = (ReviewsModule) findViewById(R.id.reviews_module);
 
         releaseDate.setText(dateFormatter(movie.getReleaseDate(), "yyyy-MM-dd", "MMMM dd, yyyy"));
         rating.setText(String.valueOf(movie.getVoteAverage()));
@@ -91,7 +95,7 @@ public class DetailsActivity extends AppCompatActivity implements DetailsView {
 
     @Override
     public void showMovieReviews(List<MovieReviews.TMDBReview> movieReviews) {
-
+        reviewsModule.addReviews(movieReviews);
     }
 
     private String dateFormatter(String originDate, String originFormat, String resultFormat) {
