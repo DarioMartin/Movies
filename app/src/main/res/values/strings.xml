@@ -6,4 +6,7 @@
     <string name="relase_date_title">Relase date</string>
     <string name="rating_title">Rating</string>
     <string name="review_item_title">Review by %s</string>
+    <string name="videos_module_title">Videos</string>
+    <string name="reviews_module_title">Reviews</string>
+    <string name="show_all">Show all</string>
 </resources>

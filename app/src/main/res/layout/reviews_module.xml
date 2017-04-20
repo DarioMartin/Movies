@@ -7,7 +7,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Reviews"
+        android:text="@string/reviews_module_title"
         android:textColor="@color/colorPrimary"
         android:textSize="18sp"
         android:textStyle="bold" />
@@ -23,7 +23,8 @@
         android:id="@+id/show_all_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Show all"
-        android:textColor="@color/colorAccent" />
+        android:text="@string/show_all"
+        android:textColor="@color/colorAccent"
+        android:visibility="gone"/>
 
 </LinearLayout>
