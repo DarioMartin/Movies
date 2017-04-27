@@ -1,6 +1,7 @@
 package com.fasttrack.android.movies.connections;
 
 import com.fasttrack.android.movies.BuildConfig;
+import com.fasttrack.android.movies.models.Movie;
 import com.fasttrack.android.movies.models.MovieImages;
 import com.fasttrack.android.movies.models.MoviePage;
 import com.fasttrack.android.movies.models.MovieReviews;
@@ -24,6 +25,9 @@ public interface TheMovieDBAPI {
 
     @GET("movie/top_rated?api_key=" + BuildConfig.THE_MOVIE_DB_API_KEY)
     Call<MoviePage> getTopRatedMovies(@Query("page") int page);
+
+    @GET("movie/{id}?api_key=" + BuildConfig.THE_MOVIE_DB_API_KEY)
+    Call<Movie> getMovieDetails(@Path("id") String id);
 
     @GET("movie/{id}/images?api_key=" + BuildConfig.THE_MOVIE_DB_API_KEY)
     Call<MovieImages> getMovieImages(@Path("id") String id);

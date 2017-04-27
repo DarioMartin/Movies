@@ -1,11 +1,14 @@
 package com.fasttrack.android.movies.connections;
 
+import com.fasttrack.android.movies.models.Movie;
 import com.fasttrack.android.movies.models.MovieImages;
 import com.fasttrack.android.movies.models.MoviePage;
 import com.fasttrack.android.movies.models.MovieReviews;
 import com.fasttrack.android.movies.models.MovieVideos;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+
+import java.util.concurrent.locks.ReadWriteLock;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -73,6 +76,24 @@ public class Controller {
 
             @Override
             public void onFailure(Call<MoviePage> call, Throwable t) {
+
+            }
+        });
+    }
+
+    public static void loadMovieDetails(String id, final RequestCallback callback) {
+        theMovieDBAPI.getMovieDetails(id).enqueue(new Callback<Movie>() {
+            @Override
+            public void onResponse(Call<Movie> call, Response<Movie> response) {
+                if (response.code() == 200) {
+                    callback.onResponse(response.body());
+                } else {
+                    callback.onFailure(response.message());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Movie> call, Throwable t) {
 
             }
         });

@@ -1,5 +1,6 @@
 package com.fasttrack.android.movies.views;
 
+import com.fasttrack.android.movies.models.Movie;
 import com.fasttrack.android.movies.models.MovieImages;
 import com.fasttrack.android.movies.models.MovieReviews;
 import com.fasttrack.android.movies.models.MovieVideos;
@@ -18,5 +19,7 @@ public interface DetailsView {
 
     void showMovieReviews(List<MovieReviews.TMDBReview> movieReviews);
 
+    void showMovieDetails(Movie movie);
 
+    void updateFavState(boolean isFavourite);
 }

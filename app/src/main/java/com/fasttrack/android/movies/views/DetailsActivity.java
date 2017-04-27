@@ -13,11 +13,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import com.fasttrack.android.movies.R;
 import com.fasttrack.android.movies.ReviewsModule;
 import com.fasttrack.android.movies.VideosModule;
-import com.fasttrack.android.movies.adapters.ReviewsAdapter;
 import com.fasttrack.android.movies.models.Movie;
 import com.fasttrack.android.movies.models.MovieImages;
 import com.fasttrack.android.movies.models.MovieReviews;
@@ -38,6 +38,7 @@ public class DetailsActivity extends AppCompatActivity implements DetailsView {
     private DetailsPresenter presenter;
     private ImageView poster;
     private TextView releaseDate, rating, overview;
+    private ToggleButton favouriteToggle;
     private Movie movie;
     private CustomPagerAdapter backdropAdapter;
     private ReviewsModule reviewsModule;
@@ -72,17 +73,33 @@ public class DetailsActivity extends AppCompatActivity implements DetailsView {
         poster = (ImageView) findViewById(R.id.poster);
         releaseDate = (TextView) findViewById(R.id.release_date);
         rating = (TextView) findViewById(R.id.rating);
+        favouriteToggle = (ToggleButton) findViewById(R.id.favourite_toogle);
         overview = (TextView) findViewById(R.id.overview);
         reviewsModule = (ReviewsModule) findViewById(R.id.reviews_module);
-        videosModule = (VideosModule)findViewById(R.id.videos_module);
+        videosModule = (VideosModule) findViewById(R.id.videos_module);
 
-        releaseDate.setText(dateFormatter(movie.getReleaseDate(), "yyyy-MM-dd", "MMMM dd, yyyy"));
-        rating.setText(String.valueOf(movie.getVoteAverage()));
-        overview.setText(movie.getOverview());
-
+        presenter.getMovieDetails();
         presenter.getMovieImages();
         presenter.getMovieReviews();
         presenter.getMovieVideos();
+
+        configureFavToggle();
+    }
+
+    private void configureFavToggle() {
+        favouriteToggle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.setFavourite(favouriteToggle.isChecked());
+            }
+        });
+    }
+
+    @Override
+    public void showMovieDetails(Movie movie) {
+        releaseDate.setText(dateFormatter(movie.getReleaseDate(), "yyyy-MM-dd", "MMMM dd, yyyy"));
+        rating.setText(String.valueOf(movie.getVoteAverage()));
+        overview.setText(movie.getOverview());
     }
 
     public void showMovieImages(MovieImages movieImages) {
@@ -99,6 +116,11 @@ public class DetailsActivity extends AppCompatActivity implements DetailsView {
     @Override
     public void showMovieReviews(List<MovieReviews.TMDBReview> movieReviews) {
         reviewsModule.addReviews(movieReviews);
+    }
+
+    @Override
+    public void updateFavState(boolean isFavourite) {
+        favouriteToggle.setChecked(isFavourite);
     }
 
     private String dateFormatter(String originDate, String originFormat, String resultFormat) {

@@ -22,6 +22,20 @@ public class DetailsPresenter {
         this.movie = movie;
     }
 
+    public void getMovieDetails(){
+        Controller.getInstance().loadMovieDetails(movie.getId(), new Controller.RequestCallback<Movie>() {
+            @Override
+            public void onResponse(Movie movie) {
+                view.showMovieDetails(movie);
+            }
+
+            @Override
+            public void onFailure(String movie) {
+
+            }
+        });
+    }
+
     public void getMovieImages() {
         Controller.getInstance().loadMovieImages(movie.getId(), new Controller.RequestCallback<MovieImages>() {
             @Override
@@ -64,4 +78,7 @@ public class DetailsPresenter {
         });
     }
 
+    public void setFavourite(boolean isFavourite) {
+
+    }
 }
