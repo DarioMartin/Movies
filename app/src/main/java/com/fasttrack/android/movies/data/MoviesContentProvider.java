@@ -21,6 +21,7 @@ import static com.fasttrack.android.movies.data.MoviesContract.FavMoviesEntry.TA
 public class MoviesContentProvider extends ContentProvider {
 
     public static final int FAV_MOVIES = 100;
+    public static final int FAV_MOVIES_WITH_ID = 101;
 
     private static final UriMatcher uriMatcher = buildUriMatcher();
 
@@ -28,6 +29,7 @@ public class MoviesContentProvider extends ContentProvider {
         UriMatcher uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
 
         uriMatcher.addURI(MoviesContract.AUTHORITY, MoviesContract.PATH_MOVIES, FAV_MOVIES);
+        uriMatcher.addURI(MoviesContract.AUTHORITY, MoviesContract.PATH_MOVIES + "/#", FAV_MOVIES_WITH_ID);
 
         return uriMatcher;
     }
@@ -70,13 +72,53 @@ public class MoviesContentProvider extends ContentProvider {
 
     @Override
     public Cursor query(@NonNull Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
-        throw new UnsupportedOperationException("Not yet implemented");
+        final SQLiteDatabase db = moviesDBHelper.getReadableDatabase();
+
+        int match = uriMatcher.match(uri);
+        Cursor retCursor;
+
+        switch (match) {
+            case FAV_MOVIES:
+                retCursor = db.query(TABLE_NAME,
+                        projection,
+                        selection,
+                        selectionArgs,
+                        null,
+                        null,
+                        sortOrder);
+                break;
+            default:
+                throw new UnsupportedOperationException("Unknown uri: " + uri);
+        }
+
+        retCursor.setNotificationUri(getContext().getContentResolver(), uri);
+
+        return retCursor;
     }
 
 
     @Override
     public int delete(@NonNull Uri uri, String selection, String[] selectionArgs) {
-        throw new UnsupportedOperationException("Not yet implemented");
+        final SQLiteDatabase db = moviesDBHelper.getWritableDatabase();
+
+        int match = uriMatcher.match(uri);
+
+        int tasksDeleted;
+
+        switch (match) {
+            case FAV_MOVIES_WITH_ID:
+                String id = uri.getPathSegments().get(1);
+                tasksDeleted = db.delete(TABLE_NAME, "_id=?", new String[]{id});
+                break;
+            default:
+                throw new UnsupportedOperationException("Unknown uri: " + uri);
+        }
+
+        if (tasksDeleted != 0) {
+            getContext().getContentResolver().notifyChange(uri, null);
+        }
+
+        return tasksDeleted;
     }
 
 

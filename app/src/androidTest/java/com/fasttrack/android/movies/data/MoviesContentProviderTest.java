@@ -8,12 +8,14 @@ import android.content.Context;
 import android.content.UriMatcher;
 import android.content.pm.PackageManager;
 import android.content.pm.ProviderInfo;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 
 import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertTrue;
 import static junit.framework.Assert.fail;
 
 import com.fasttrack.android.movies.data.MoviesContract.FavMoviesEntry;
@@ -50,11 +52,11 @@ public class MoviesContentProviderTest {
             String actualAuthority = providerInfo.authority;
 
             /* Make sure that the registered authority matches the authority from the Contract */
-            String incorrectAuthority = "Error: TaskContentProvider registered with authority: " + actualAuthority + " instead of expected authority: " + packageName;
+            String incorrectAuthority = "Error: MovieContentProvider registered with authority: " + actualAuthority + " instead of expected authority: " + packageName;
             assertEquals(incorrectAuthority, actualAuthority, packageName);
 
         } catch (PackageManager.NameNotFoundException e) {
-            String providerNotRegisteredAtAll = "Error: TaskContentProvider not registered at " + context.getPackageName();
+            String providerNotRegisteredAtAll = "Error: MovieContentProvider not registered at " + context.getPackageName();
             fail(providerNotRegisteredAtAll);
         }
     }
@@ -64,10 +66,10 @@ public class MoviesContentProviderTest {
     @Test
     public void testUriMatcher() {
         UriMatcher testMatcher = MoviesContentProvider.buildUriMatcher();
-        String tasksUriDoesNotMatch = "Error: The TASKS URI was matched incorrectly.";
-        int actualTasksMatchCode = testMatcher.match(TEST_FAV_MOVIES);
-        int expectedTasksMatchCode = MoviesContentProvider.FAV_MOVIES;
-        assertEquals(tasksUriDoesNotMatch, actualTasksMatchCode, expectedTasksMatchCode);
+        String moviesUriDoesNotMatch = "Error: The MOVIES URI was matched incorrectly.";
+        int actualMoviesMatchCode = testMatcher.match(TEST_FAV_MOVIES);
+        int expectedMoviesMatchCode = MoviesContentProvider.FAV_MOVIES;
+        assertEquals(moviesUriDoesNotMatch, actualMoviesMatchCode, expectedMoviesMatchCode);
     }
 
     /**
@@ -75,29 +77,100 @@ public class MoviesContentProviderTest {
      */
     @Test
     public void testInsert() {
-        ContentValues testTaskValues = new ContentValues();
-        testTaskValues.put(FavMoviesEntry._ID, 1);
-        testTaskValues.put(FavMoviesEntry.COLUMN_TITLE, "Peli prueba 1");
-        testTaskValues.put(FavMoviesEntry.COLUMN_TMDB_ID, "000");
-        testTaskValues.put(FavMoviesEntry.COLUMN_POSTER, "Poster");
+        ContentValues testMovieValues = new ContentValues();
+        testMovieValues.put(FavMoviesEntry._ID, 1);
+        testMovieValues.put(FavMoviesEntry.COLUMN_TITLE, "Peli prueba 1");
+        testMovieValues.put(FavMoviesEntry.COLUMN_TMDB_ID, "000");
+        testMovieValues.put(FavMoviesEntry.COLUMN_POSTER, "Poster");
 
-        TestUtilities.TestContentObserver taskObserver = TestUtilities.getTestContentObserver();
+        TestUtilities.TestContentObserver movieObserver = TestUtilities.getTestContentObserver();
 
         ContentResolver contentResolver = context.getContentResolver();
 
-        contentResolver.registerContentObserver(FavMoviesEntry.CONTENT_URI, true, taskObserver);
+        contentResolver.registerContentObserver(FavMoviesEntry.CONTENT_URI, true, movieObserver);
 
-        Uri uri = contentResolver.insert(FavMoviesEntry.CONTENT_URI, testTaskValues);
+        Uri uri = contentResolver.insert(FavMoviesEntry.CONTENT_URI, testMovieValues);
 
         Uri expectedUri = ContentUris.withAppendedId(FavMoviesEntry.CONTENT_URI, 1);
 
         String insertProviderFailed = "Unable to insert item through Provider";
         assertEquals(insertProviderFailed, uri, expectedUri);
 
-        taskObserver.waitForNotificationOrFail();
+        movieObserver.waitForNotificationOrFail();
 
-        contentResolver.unregisterContentObserver(taskObserver);
+        contentResolver.unregisterContentObserver(movieObserver);
     }
 
+
+    /**
+     * Inserts data, then tests if a query for the movies directory returns that data as a Cursor
+     */
+    @Test
+    public void testQuery() {
+        MoviesDBHelper dbHelper = new MoviesDBHelper(context);
+        SQLiteDatabase database = dbHelper.getWritableDatabase();
+
+        ContentValues testMovieValues = new ContentValues();
+        testMovieValues.put(FavMoviesEntry.COLUMN_TMDB_ID, "1234");
+        testMovieValues.put(FavMoviesEntry.COLUMN_TITLE, "Test title");
+        testMovieValues.put(FavMoviesEntry.COLUMN_POSTER, "Test poster");
+
+        long movieRowId = database.insert(FavMoviesEntry.TABLE_NAME, null, testMovieValues);
+
+        String insertFailed = "Unable to insert directly into the database";
+        assertTrue(insertFailed, movieRowId != -1);
+
+        database.close();
+
+        Cursor movieCursor = context.getContentResolver().query(
+                FavMoviesEntry.CONTENT_URI,
+                null,
+                null,
+                null,
+                null);
+
+        String queryFailed = "Query failed to return a valid Cursor";
+        assertTrue(queryFailed, movieCursor != null);
+
+        movieCursor.close();
+    }
+
+
+    /**
+     * Tests deleting a single row of data via a ContentResolver
+     */
+    @Test
+    public void testDelete() {
+        MoviesDBHelper helper = new MoviesDBHelper(context);
+        SQLiteDatabase database = helper.getWritableDatabase();
+
+        ContentValues testMovieValues = new ContentValues();
+        testMovieValues.put(FavMoviesEntry._ID, 1);
+        testMovieValues.put(FavMoviesEntry.COLUMN_TMDB_ID, "1234");
+        testMovieValues.put(FavMoviesEntry.COLUMN_TITLE, "Test title");
+        testMovieValues.put(FavMoviesEntry.COLUMN_POSTER, "Test poster");
+
+        long movieRowId = database.insert(FavMoviesEntry.TABLE_NAME, null, testMovieValues);
+
+        String insertFailed = "Unable to insert directly into the database";
+        assertTrue(insertFailed, movieRowId != -1);
+
+        database.close();
+
+        TestUtilities.TestContentObserver movieObserver = TestUtilities.getTestContentObserver();
+
+        ContentResolver contentResolver = context.getContentResolver();
+        contentResolver.registerContentObserver(FavMoviesEntry.CONTENT_URI, true, movieObserver);
+
+        Uri uriToDelete = FavMoviesEntry.CONTENT_URI.buildUpon().appendPath("1").build();
+        int movieDeleted = contentResolver.delete(uriToDelete, null, null);
+
+        String deleteFailed = "Unable to delete item in the database";
+        assertTrue(deleteFailed, movieDeleted != 0);
+
+        movieObserver.waitForNotificationOrFail();
+
+        contentResolver.unregisterContentObserver(movieObserver);
+    }
 
 }
