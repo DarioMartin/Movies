@@ -65,11 +65,13 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
     public void addMovieList(List<Movie> movies) {
         cursor = null;
         this.movies.addAll(movies);
+        notifyDataSetChanged();
     }
 
     public void addMovieCursor(Cursor cursor) {
         this.cursor = cursor;
         this.movies.clear();
+        notifyDataSetChanged();
     }
 
     public void setPositionClickListener(PositionClickListener positionClickListener) {

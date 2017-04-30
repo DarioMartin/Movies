@@ -3,6 +3,9 @@ package com.fasttrack.android.movies.views;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -20,7 +23,9 @@ import com.fasttrack.android.movies.utils.EndlessRecyclerOnScrollListener;
 
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements MainView {
+public class MainActivity extends AppCompatActivity implements MainView, LoaderManager.LoaderCallbacks<Cursor> {
+
+    private static final int FAV_MOVIES_LOADER = 45;
 
     private MainPresenter.Sorting sorting = MainPresenter.Sorting.POPULAR;
     private RecyclerView moviesRecyclerView;
@@ -65,17 +70,14 @@ public class MainActivity extends AppCompatActivity implements MainView {
 
     @Override
     public void showMovies(List<Movie> movies) {
+        getSupportLoaderManager().destroyLoader(FAV_MOVIES_LOADER);
         adapter.addMovieList(movies);
-        adapter.notifyDataSetChanged();
         noContentMessage.setVisibility(movies.isEmpty() ? View.VISIBLE : View.GONE);
     }
 
     @Override
     public void showDBMovies() {
-        Cursor movieCursor = getContentResolver().query(MoviesContract.FavMoviesEntry.CONTENT_URI, null, null, null, null);
-        adapter.addMovieCursor(movieCursor);
-        adapter.notifyDataSetChanged();
-        noContentMessage.setVisibility(movieCursor.getCount() == 0 ? View.VISIBLE : View.GONE);
+        getSupportLoaderManager().initLoader(FAV_MOVIES_LOADER, null, this);
     }
 
     @Override
@@ -120,5 +122,27 @@ public class MainActivity extends AppCompatActivity implements MainView {
         });
         adapter.clearContent();
         presenter.getMovies(sorting);
+    }
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int loaderId, Bundle args) {
+        switch (loaderId) {
+            case FAV_MOVIES_LOADER:
+                return new CursorLoader(this, MoviesContract.FavMoviesEntry.CONTENT_URI, null, null, null, null);
+            default:
+                throw new RuntimeException("Loader Not Implemented: " + loaderId);
+        }
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        adapter.addMovieCursor(data);
+        noContentMessage.setVisibility(data.getCount() == 0 ? View.VISIBLE : View.GONE);
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+        adapter.addMovieCursor(null);
+        noContentMessage.setVisibility(View.VISIBLE);
     }
 }
