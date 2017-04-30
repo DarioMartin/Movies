@@ -4,8 +4,10 @@ import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 
 import com.fasttrack.android.movies.adapters.VideosAdapter;
 import com.fasttrack.android.movies.models.MovieVideos;
@@ -18,10 +20,7 @@ import java.util.List;
 
 public class VideosModule extends LinearLayout {
 
-    private View rootView;
-    private RecyclerView recyclerView;
-    private LinearLayoutManager layoutManager;
-    private VideosAdapter adapter;
+    private ListView videoList;
 
     public VideosModule(Context context) {
         super(context);
@@ -34,21 +33,13 @@ public class VideosModule extends LinearLayout {
     }
 
     private void init(Context context) {
-        rootView = inflate(context, R.layout.videos_module, this);
-
-        recyclerView = (RecyclerView) findViewById(R.id.videos_recycler_view);
-        recyclerView.setHasFixedSize(true);
-
-        layoutManager = new LinearLayoutManager(this.getContext());
-        recyclerView.setLayoutManager(layoutManager);
-
-        adapter = new VideosAdapter();
-        recyclerView.setAdapter(adapter);
+        inflate(context, R.layout.videos_module, this);
+        videoList = (ListView) findViewById(R.id.video_list_view);
     }
 
     public void addVideos(List<MovieVideos.TMDBVideo> videos) {
-        adapter.addVideos(videos);
-        adapter.notifyDataSetChanged();
+        VideosAdapter adapter = new VideosAdapter(getContext(), videos);
+        videoList.setAdapter(adapter);
     }
 
 }

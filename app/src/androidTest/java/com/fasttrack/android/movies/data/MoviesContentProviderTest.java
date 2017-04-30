@@ -76,6 +76,7 @@ public class MoviesContentProviderTest {
     @Test
     public void testInsert() {
         ContentValues testTaskValues = new ContentValues();
+        testTaskValues.put(FavMoviesEntry._ID, 1);
         testTaskValues.put(FavMoviesEntry.COLUMN_TITLE, "Peli prueba 1");
         testTaskValues.put(FavMoviesEntry.COLUMN_TMDB_ID, "000");
         testTaskValues.put(FavMoviesEntry.COLUMN_POSTER, "Poster");

@@ -1,66 +1,38 @@
 package com.fasttrack.android.movies.adapters;
 
-import android.support.v7.widget.RecyclerView;
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.fasttrack.android.movies.R;
 import com.fasttrack.android.movies.models.MovieVideos;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by dariomartin on 19/4/17.
  */
 
-public class VideosAdapter extends RecyclerView.Adapter<VideosAdapter.VideoViewHolder> {
+public class VideosAdapter extends ArrayAdapter<MovieVideos.TMDBVideo> {
 
-    private ArrayList<MovieVideos.TMDBVideo> videos;
-
-    public VideosAdapter() {
-        this.videos = new ArrayList<>();
-    }
-
-    public void clearContent() {
-        videos.clear();
-    }
-
-
-    @Override
-    public VideoViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.video_item, parent, false);
-        return new VideoViewHolder(view);
+    public VideosAdapter(Context context, List<MovieVideos.TMDBVideo> videos) {
+        super(context, 0, videos);
     }
 
     @Override
-    public void onBindViewHolder(VideoViewHolder holder, final int position) {
-        holder.setItem(videos.get(position));
-    }
+    public View getView(int position, View convertView, ViewGroup parent) {
+        MovieVideos.TMDBVideo video = getItem(position);
 
-    @Override
-    public int getItemCount() {
-        return videos.size();
-    }
-
-    public void addVideos(List<MovieVideos.TMDBVideo> videos) {
-        this.videos.addAll(videos);
-    }
-
-
-    class VideoViewHolder extends RecyclerView.ViewHolder {
-
-        private TextView name;
-
-        VideoViewHolder(View itemView) {
-            super(itemView);
-            name = (TextView) itemView.findViewById(R.id.video_item_name);
+        if (convertView == null) {
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.video_item, parent, false);
         }
 
-        void setItem(MovieVideos.TMDBVideo video) {
-            name.setText(video.getName());
-        }
+        TextView videoName = (TextView) convertView.findViewById(R.id.video_item_name);
+        videoName.setText(video.getName());
+        return convertView;
     }
+
 }
