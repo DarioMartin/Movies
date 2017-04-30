@@ -59,7 +59,7 @@ public class DetailsActivity extends AppCompatActivity implements DetailsView {
 
         Toolbar actionBarToolbar = (Toolbar) findViewById(R.id.main_toolbar);
         setSupportActionBar(actionBarToolbar);
-        getSupportActionBar().setTitle(movie.getOriginalTitle());
+        getSupportActionBar().setTitle(movie.getTitle());
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 

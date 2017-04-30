@@ -8,6 +8,8 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
 import com.fasttrack.android.movies.R;
 import com.fasttrack.android.movies.adapters.MoviesAdapter;
@@ -25,11 +27,14 @@ public class MainActivity extends AppCompatActivity implements MainView {
     private MoviesAdapter adapter;
     private GridLayoutManager layoutManager;
     private MainPresenter presenter;
+    private TextView noContentMessage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        noContentMessage = (TextView) findViewById(R.id.no_content_message);
 
         moviesRecyclerView = (RecyclerView) findViewById(R.id.movies_recycler_view);
         moviesRecyclerView.setHasFixedSize(true);
@@ -62,6 +67,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
     public void showMovies(List<Movie> movies) {
         adapter.addMovieList(movies);
         adapter.notifyDataSetChanged();
+        noContentMessage.setVisibility(movies.isEmpty() ? View.VISIBLE : View.GONE);
     }
 
     @Override
@@ -69,6 +75,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
         Cursor movieCursor = getContentResolver().query(MoviesContract.FavMoviesEntry.CONTENT_URI, null, null, null, null);
         adapter.addMovieCursor(movieCursor);
         adapter.notifyDataSetChanged();
+        noContentMessage.setVisibility(movieCursor.getCount() == 0 ? View.VISIBLE : View.GONE);
     }
 
     @Override
