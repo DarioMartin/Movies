@@ -1,6 +1,9 @@
 package com.fasttrack.android.movies.presenters;
 
+import android.database.Cursor;
+
 import com.fasttrack.android.movies.connections.Controller;
+import com.fasttrack.android.movies.data.MoviesContract;
 import com.fasttrack.android.movies.models.Movie;
 import com.fasttrack.android.movies.views.MainView;
 
@@ -13,7 +16,7 @@ import java.util.List;
 public class MainPresenter {
 
     public enum Sorting {
-        POPULAR, TOP_RATED
+        POPULAR, FAVS, TOP_RATED
     }
 
     private MainView view;
@@ -53,6 +56,10 @@ public class MainPresenter {
 
                     }
                 });
+            case FAVS:
+                if (current_page == 1) {
+                    view.showDBMovies();
+                }
         }
     }
 }

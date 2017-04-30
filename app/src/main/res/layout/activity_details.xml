@@ -133,13 +133,12 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:text="ToggleButton"
+                android:textOff="@string/add_fav_button"
+                android:textOn="@string/delete_fav_button"
+                app:layout_constraintBottom_toBottomOf="@+id/poster"
+                app:layout_constraintHorizontal_bias="0.333"
                 app:layout_constraintLeft_toRightOf="@+id/poster"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/rating"
-                android:textOn="Delete favourite"
-                android:textOff="Add favourite"/>
+                app:layout_constraintRight_toRightOf="parent" />
 
             <TextView
                 android:id="@+id/overview"

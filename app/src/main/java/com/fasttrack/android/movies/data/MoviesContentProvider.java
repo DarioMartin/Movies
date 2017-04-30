@@ -87,6 +87,16 @@ public class MoviesContentProvider extends ContentProvider {
                         null,
                         sortOrder);
                 break;
+            case FAV_MOVIES_WITH_ID:
+                String id = uri.getPathSegments().get(1);
+                retCursor = db.query(TABLE_NAME,
+                        projection,
+                        FavMoviesEntry.COLUMN_TMDB_ID + " = ?",
+                        new String[]{id},
+                        null,
+                        null,
+                        sortOrder);
+                break;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
@@ -108,7 +118,7 @@ public class MoviesContentProvider extends ContentProvider {
         switch (match) {
             case FAV_MOVIES_WITH_ID:
                 String id = uri.getPathSegments().get(1);
-                tasksDeleted = db.delete(TABLE_NAME, "_id=?", new String[]{id});
+                tasksDeleted = db.delete(TABLE_NAME, FavMoviesEntry.COLUMN_TMDB_ID + "=?", new String[]{id});
                 break;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);

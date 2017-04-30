@@ -1,6 +1,8 @@
 package com.fasttrack.android.movies.views;
 
 
+import android.database.Cursor;
+
 import com.fasttrack.android.movies.models.Movie;
 
 import java.util.List;
@@ -11,4 +13,7 @@ import java.util.List;
 
 public interface MainView {
     void showMovies(List<Movie> movies);
+
+    void showDBMovies();
+
 }

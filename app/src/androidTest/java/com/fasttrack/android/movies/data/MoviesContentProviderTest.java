@@ -20,6 +20,7 @@ import static junit.framework.Assert.fail;
 
 import com.fasttrack.android.movies.data.MoviesContract.FavMoviesEntry;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -35,6 +36,13 @@ public class MoviesContentProviderTest {
 
     @Before
     public void setUp() {
+        MoviesDBHelper dbHelper = new MoviesDBHelper(context);
+        SQLiteDatabase database = dbHelper.getWritableDatabase();
+        database.delete(FavMoviesEntry.TABLE_NAME, null, null);
+    }
+
+    @After
+    public final void tearDown() {
         MoviesDBHelper dbHelper = new MoviesDBHelper(context);
         SQLiteDatabase database = dbHelper.getWritableDatabase();
         database.delete(FavMoviesEntry.TABLE_NAME, null, null);
@@ -122,12 +130,7 @@ public class MoviesContentProviderTest {
 
         database.close();
 
-        Cursor movieCursor = context.getContentResolver().query(
-                FavMoviesEntry.CONTENT_URI,
-                null,
-                null,
-                null,
-                null);
+        Cursor movieCursor = context.getContentResolver().query(FavMoviesEntry.CONTENT_URI, null, null, null, null);
 
         String queryFailed = "Query failed to return a valid Cursor";
         assertTrue(queryFailed, movieCursor != null);
@@ -145,7 +148,6 @@ public class MoviesContentProviderTest {
         SQLiteDatabase database = helper.getWritableDatabase();
 
         ContentValues testMovieValues = new ContentValues();
-        testMovieValues.put(FavMoviesEntry._ID, 1);
         testMovieValues.put(FavMoviesEntry.COLUMN_TMDB_ID, "1234");
         testMovieValues.put(FavMoviesEntry.COLUMN_TITLE, "Test title");
         testMovieValues.put(FavMoviesEntry.COLUMN_POSTER, "Test poster");
@@ -162,7 +164,7 @@ public class MoviesContentProviderTest {
         ContentResolver contentResolver = context.getContentResolver();
         contentResolver.registerContentObserver(FavMoviesEntry.CONTENT_URI, true, movieObserver);
 
-        Uri uriToDelete = FavMoviesEntry.CONTENT_URI.buildUpon().appendPath("1").build();
+        Uri uriToDelete = FavMoviesEntry.CONTENT_URI.buildUpon().appendPath("1234").build();
         int movieDeleted = contentResolver.delete(uriToDelete, null, null);
 
         String deleteFailed = "Unable to delete item in the database";

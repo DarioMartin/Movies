@@ -9,4 +9,7 @@
     <string name="videos_module_title">Videos</string>
     <string name="reviews_module_title">Reviews</string>
     <string name="show_all">Show all</string>
+    <string name="menu_item_favs">Favourites</string>
+    <string name="add_fav_button">Add</string>
+    <string name="delete_fav_button">Delete</string>
 </resources>

@@ -1,6 +1,7 @@
 package com.fasttrack.android.movies.views;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
@@ -10,6 +11,7 @@ import android.view.MenuItem;
 
 import com.fasttrack.android.movies.R;
 import com.fasttrack.android.movies.adapters.MoviesAdapter;
+import com.fasttrack.android.movies.data.MoviesContract;
 import com.fasttrack.android.movies.models.Movie;
 import com.fasttrack.android.movies.presenters.MainPresenter;
 import com.fasttrack.android.movies.utils.EndlessRecyclerOnScrollListener;
@@ -40,9 +42,11 @@ public class MainActivity extends AppCompatActivity implements MainView {
             @Override
             public void itemClicked(int position) {
                 Movie movie = adapter.getMovieAtPosition(position);
-                Intent myIntent = new Intent(MainActivity.this, DetailsActivity.class);
-                myIntent.putExtra("movie", movie);
-                MainActivity.this.startActivity(myIntent);
+                if (movie != null) {
+                    Intent myIntent = new Intent(MainActivity.this, DetailsActivity.class);
+                    myIntent.putExtra("movie", movie);
+                    MainActivity.this.startActivity(myIntent);
+                }
             }
         });
 
@@ -56,13 +60,21 @@ public class MainActivity extends AppCompatActivity implements MainView {
 
     @Override
     public void showMovies(List<Movie> movies) {
-        adapter.addMovies(movies);
+        adapter.addMovieList(movies);
+        adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void showDBMovies() {
+        Cursor movieCursor = getContentResolver().query(MoviesContract.FavMoviesEntry.CONTENT_URI, null, null, null, null);
+        adapter.addMovieCursor(movieCursor);
         adapter.notifyDataSetChanged();
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.sorting, menu);
+        setTitle(menu.getItem(0).getTitle());
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -77,11 +89,17 @@ public class MainActivity extends AppCompatActivity implements MainView {
             case R.id.sorting_top_rated:
                 newSorting = MainPresenter.Sorting.TOP_RATED;
                 break;
+            case R.id.sorting_favs:
+                newSorting = MainPresenter.Sorting.FAVS;
+                break;
         }
         if (newSorting != sorting) {
             sorting = newSorting;
             updateContent();
         }
+
+        setTitle(item.getTitle());
+
         return super.onOptionsItemSelected(item);
     }
 

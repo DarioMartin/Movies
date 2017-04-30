@@ -78,7 +78,4 @@ public class DetailsPresenter {
         });
     }
 
-    public void setFavourite(boolean isFavourite) {
-
-    }
 }

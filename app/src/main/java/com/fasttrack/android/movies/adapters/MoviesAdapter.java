@@ -1,5 +1,6 @@
 package com.fasttrack.android.movies.adapters;
 
+import android.database.Cursor;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.fasttrack.android.movies.R;
+import com.fasttrack.android.movies.data.MoviesContract;
 import com.fasttrack.android.movies.models.Movie;
 import com.fasttrack.android.movies.utils.ImageLoader;
 
@@ -20,14 +22,16 @@ import java.util.List;
 public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewHolder> {
 
     private ArrayList<Movie> movies;
+    private Cursor cursor;
     private PositionClickListener positionClickListener;
 
     public MoviesAdapter() {
-        this.movies = new ArrayList<>();
+        movies = new ArrayList<>();
     }
 
     public void clearContent() {
         movies.clear();
+        cursor = null;
     }
 
     public interface PositionClickListener {
@@ -43,16 +47,29 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
 
     @Override
     public void onBindViewHolder(MovieViewHolder holder, final int position) {
-        holder.setItem(movies.get(position));
+        if (cursor == null) {
+            holder.setItem(movies.get(position));
+        } else if (cursor.getCount() > position) {
+            holder.setItem(getCursorMovieAtPosition(position));
+        }
     }
 
     @Override
     public int getItemCount() {
-        return movies.size();
+        if (cursor == null) {
+            return movies.size();
+        }
+        return cursor.getCount();
     }
 
-    public void addMovies(List<Movie> movies) {
+    public void addMovieList(List<Movie> movies) {
+        cursor = null;
         this.movies.addAll(movies);
+    }
+
+    public void addMovieCursor(Cursor cursor) {
+        this.cursor = cursor;
+        this.movies.clear();
     }
 
     public void setPositionClickListener(PositionClickListener positionClickListener) {
@@ -60,7 +77,27 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
     }
 
     public Movie getMovieAtPosition(int position) {
-        return movies.isEmpty() ? null : movies.get(position);
+        if (cursor == null) {
+            return movies.isEmpty() ? null : movies.get(position);
+        } else if (cursor.getCount() > position) {
+            return getCursorMovieAtPosition(position);
+        }
+        return null;
+    }
+
+    private Movie getCursorMovieAtPosition(int position) {
+        int tmbdIdIndex = cursor.getColumnIndex(MoviesContract.FavMoviesEntry.COLUMN_TMDB_ID);
+        int titleIndex = cursor.getColumnIndex(MoviesContract.FavMoviesEntry.COLUMN_TITLE);
+        int posterIndex = cursor.getColumnIndex(MoviesContract.FavMoviesEntry.COLUMN_POSTER);
+
+        cursor.moveToPosition(position);
+
+        Movie movie = new Movie();
+        movie.setId(cursor.getString(tmbdIdIndex));
+        movie.setTitle(cursor.getString(titleIndex));
+        movie.setPoster(cursor.getString(posterIndex));
+
+        return movie;
     }
 
     class MovieViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {

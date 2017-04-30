@@ -13,7 +13,7 @@ import com.fasttrack.android.movies.data.MoviesContract.FavMoviesEntry;
 public class MoviesDBHelper extends SQLiteOpenHelper {
 
     public static final String DATABASE_NAME = "moives.db";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
 
     public MoviesDBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -26,7 +26,8 @@ public class MoviesDBHelper extends SQLiteOpenHelper {
                         FavMoviesEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                         FavMoviesEntry.COLUMN_TMDB_ID + " TEXT NOT NULL, " +
                         FavMoviesEntry.COLUMN_TITLE + " TEXT, " +
-                        FavMoviesEntry.COLUMN_POSTER + " TEXT" + ");";
+                        FavMoviesEntry.COLUMN_POSTER + " TEXT" + "," +
+                        "CONSTRAINT name_unique UNIQUE (" + FavMoviesEntry.COLUMN_TMDB_ID + "));";
 
         db.execSQL(SQL_CREATE_FAV_MOVIES_TABLE);
     }

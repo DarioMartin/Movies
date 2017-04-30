@@ -1,7 +1,10 @@
 package com.fasttrack.android.movies.views;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -13,11 +16,13 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.fasttrack.android.movies.R;
 import com.fasttrack.android.movies.ReviewsModule;
 import com.fasttrack.android.movies.VideosModule;
+import com.fasttrack.android.movies.data.MoviesContract;
 import com.fasttrack.android.movies.models.Movie;
 import com.fasttrack.android.movies.models.MovieImages;
 import com.fasttrack.android.movies.models.MovieReviews;
@@ -87,12 +92,49 @@ public class DetailsActivity extends AppCompatActivity implements DetailsView {
     }
 
     private void configureFavToggle() {
+        Uri uri = MoviesContract.FavMoviesEntry.CONTENT_URI;
+        uri = uri.buildUpon().appendPath(movie.getId()).build();
+
+        Cursor favCursor = getContentResolver().query(uri, null, null, null, null);
+
+        favouriteToggle.setChecked(favCursor.getCount() > 0);
+
         favouriteToggle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.setFavourite(favouriteToggle.isChecked());
+                if (favouriteToggle.isChecked()) {
+                    addFavMovie();
+                } else {
+                    deleteFavMovie();
+                }
             }
         });
+    }
+
+    private void deleteFavMovie() {
+        try {
+            Uri uriToDelete = MoviesContract.FavMoviesEntry.CONTENT_URI.buildUpon().appendPath(movie.getId()).build();
+            int movieDeleted = getContentResolver().delete(uriToDelete, null, null);
+            if (movieDeleted > 0) {
+                Toast.makeText(getBaseContext(), "Movie deleted", Toast.LENGTH_SHORT).show();
+            }
+        } catch (android.database.SQLException exception) {
+        }
+    }
+
+    private void addFavMovie() {
+        ContentValues movieValues = new ContentValues();
+        movieValues.put(MoviesContract.FavMoviesEntry.COLUMN_TITLE, movie.getTitle());
+        movieValues.put(MoviesContract.FavMoviesEntry.COLUMN_TMDB_ID, movie.getId());
+        movieValues.put(MoviesContract.FavMoviesEntry.COLUMN_POSTER, movie.getPoster());
+
+        try {
+            Uri uri = getContentResolver().insert(MoviesContract.FavMoviesEntry.CONTENT_URI, movieValues);
+            if (uri != null) {
+                Toast.makeText(getBaseContext(), "Movie saved", Toast.LENGTH_SHORT).show();
+            }
+        } catch (android.database.SQLException exception) {
+        }
     }
 
     @Override
