@@ -10,7 +10,8 @@
         android:fontFamily="sans-serif"
         android:text="@string/videos_module_title"
         android:textColor="@color/colorPrimary"
-        android:textSize="24sp" />
+        android:textSize="24sp"
+        android:paddingLeft="16dp"/>
 
     <LinearLayout
         android:id="@+id/video_linear_layout"

@@ -36,8 +36,7 @@ public interface TheMovieDBAPI {
     Call<MovieVideos> getMovieVideos(@Path("id") String id);
 
     @GET("movie/{id}/reviews?api_key=" + BuildConfig.THE_MOVIE_DB_API_KEY)
-    Call<MovieReviews> getMovieReviews(@Path("id") String id);
-
+    Call<MovieReviews> getMovieReviews(@Path("id") String id, @Query("page") int page);
 
 
 }

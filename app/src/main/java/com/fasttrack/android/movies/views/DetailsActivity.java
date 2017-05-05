@@ -157,14 +157,7 @@ public class DetailsActivity extends AppCompatActivity implements DetailsView {
 
     @Override
     public void showMovieReviews(List<MovieReviews.TMDBReview> movieReviews) {
-        reviewsModule.addReviews(movieReviews, 1, new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent myIntent = new Intent(DetailsActivity.this, ReviewsActivity.class);
-                myIntent.putExtra("movie", movie);
-                DetailsActivity.this.startActivity(myIntent);
-            }
-        });
+        reviewsModule.addReviews(movieReviews);
     }
 
     @Override

@@ -63,6 +63,11 @@ public class VideosModule extends LinearLayout {
     }
 
     public void addVideos(List<MovieVideos.TMDBVideo> videos) {
+        if(videos.isEmpty()){
+            setVisibility(GONE);
+            return;
+        }
+
         LayoutInflater inflater = LayoutInflater.from(getContext());
 
         this.videos = videos;

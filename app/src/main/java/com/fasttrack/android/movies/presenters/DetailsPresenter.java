@@ -22,7 +22,7 @@ public class DetailsPresenter {
         this.movie = movie;
     }
 
-    public void getMovieDetails(){
+    public void getMovieDetails() {
         Controller.getInstance().loadMovieDetails(movie.getId(), new Controller.RequestCallback<Movie>() {
             @Override
             public void onResponse(Movie movie) {
@@ -51,7 +51,7 @@ public class DetailsPresenter {
     }
 
     public void getMovieReviews() {
-        Controller.getInstance().loadMovieReviews(movie.getId(), new Controller.RequestCallback<MovieReviews>() {
+        Controller.getInstance().loadMovieReviews(1, movie.getId(), new Controller.RequestCallback<MovieReviews>() {
             @Override
             public void onResponse(MovieReviews movieReviews) {
                 view.showMovieReviews(movieReviews.getReviews());

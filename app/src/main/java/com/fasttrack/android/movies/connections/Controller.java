@@ -118,8 +118,8 @@ public class Controller {
 
     }
 
-    public void loadMovieReviews(String id, final RequestCallback<MovieReviews> callback) {
-        theMovieDBAPI.getMovieReviews(id).enqueue(new Callback<MovieReviews>() {
+    public void loadMovieReviews(int currentPage, String id, final RequestCallback<MovieReviews> callback) {
+        theMovieDBAPI.getMovieReviews(id, currentPage).enqueue(new Callback<MovieReviews>() {
             @Override
             public void onResponse(Call<MovieReviews> call, Response<MovieReviews> response) {
                 if (response.code() == 200) {

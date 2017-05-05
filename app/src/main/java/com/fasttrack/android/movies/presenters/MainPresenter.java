@@ -29,10 +29,10 @@ public class MainPresenter {
         getMovies(1, sorting);
     }
 
-    public void getMovies(int current_page, Sorting sorting) {
+    public void getMovies(int currentPage, Sorting sorting) {
         switch (sorting) {
             case POPULAR:
-                Controller.getInstance().loadPopularMovies(current_page, new Controller.RequestCallback<List<Movie>>() {
+                Controller.getInstance().loadPopularMovies(currentPage, new Controller.RequestCallback<List<Movie>>() {
                     @Override
                     public void onResponse(List<Movie> movies) {
                         view.showMovies(movies);
@@ -45,7 +45,7 @@ public class MainPresenter {
                 });
                 break;
             case TOP_RATED:
-                Controller.getInstance().loadTopRatedMovies(current_page, new Controller.RequestCallback<List<Movie>>() {
+                Controller.getInstance().loadTopRatedMovies(currentPage, new Controller.RequestCallback<List<Movie>>() {
                     @Override
                     public void onResponse(List<Movie> movies) {
                         view.showMovies(movies);
@@ -57,7 +57,7 @@ public class MainPresenter {
                     }
                 });
             case FAVS:
-                if (current_page == 1) {
+                if (currentPage == 1) {
                     view.showDBMovies();
                 }
         }
