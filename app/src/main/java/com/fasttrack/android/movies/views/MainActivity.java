@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity implements MainView, LoaderM
                 Movie movie = adapter.getMovieAtPosition(position);
                 if (movie != null) {
                     Intent myIntent = new Intent(MainActivity.this, DetailsActivity.class);
-                    myIntent.putExtra("movie", movie);
+                    myIntent.putExtra(DetailsActivity.MOVIE, movie);
                     MainActivity.this.startActivity(myIntent);
                 }
             }

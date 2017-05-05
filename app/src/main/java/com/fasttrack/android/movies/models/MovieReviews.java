@@ -11,21 +11,6 @@ import java.util.List;
 
 public class MovieReviews {
 
-    /*{
-id: 100,
-page: 1,
-results: [
-{
-id: "529bc23719c2957215011e7b",
-author: "BradFlix",
-content: "I just plain love this movie!",
-url: "https://www.themoviedb.org/review/529bc23719c2957215011e7b"
-}
-],
-total_pages: 1,
-total_results: 3
-}*/
-
     @SerializedName("results")
     private List<TMDBReview> reviews = new ArrayList<>();
 

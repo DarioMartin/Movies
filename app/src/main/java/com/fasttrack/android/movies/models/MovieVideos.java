@@ -11,22 +11,6 @@ import java.util.List;
 
 public class MovieVideos {
 
-    /*{
-id: 100,
-results: [
-{
-id: "533ec652c3a36854480000c3",
-iso_639_1: "en",
-iso_3166_1: "US",
-key: "h6hZkvrFIj0",
-name: "Trailer 1",
-site: "YouTube",
-size: 360,
-type: "Trailer"
-}
-]
-}*/
-
     @SerializedName("results")
     private List<TMDBVideo> videos = new ArrayList<>();
 

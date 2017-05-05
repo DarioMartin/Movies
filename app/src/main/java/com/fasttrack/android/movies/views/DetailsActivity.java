@@ -40,6 +40,8 @@ import java.util.Locale;
 
 public class DetailsActivity extends AppCompatActivity implements DetailsView {
 
+    public static final String MOVIE = "movie";
+
     private DetailsPresenter presenter;
     private ImageView poster;
     private TextView releaseDate, rating, overview;
@@ -55,7 +57,7 @@ public class DetailsActivity extends AppCompatActivity implements DetailsView {
         setContentView(R.layout.activity_details);
 
         Intent intent = getIntent();
-        movie = intent.getExtras().getParcelable("movie");
+        movie = intent.getExtras().getParcelable(MOVIE);
 
         Toolbar actionBarToolbar = (Toolbar) findViewById(R.id.main_toolbar);
         setSupportActionBar(actionBarToolbar);
@@ -116,7 +118,7 @@ public class DetailsActivity extends AppCompatActivity implements DetailsView {
             Uri uriToDelete = MoviesContract.FavMoviesEntry.CONTENT_URI.buildUpon().appendPath(movie.getId()).build();
             int movieDeleted = getContentResolver().delete(uriToDelete, null, null);
             if (movieDeleted > 0) {
-                Toast.makeText(getBaseContext(), "Movie deleted", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getBaseContext(), getString(R.string.movie_deleted), Toast.LENGTH_SHORT).show();
             }
         } catch (android.database.SQLException exception) {
         }
@@ -131,7 +133,7 @@ public class DetailsActivity extends AppCompatActivity implements DetailsView {
         try {
             Uri uri = getContentResolver().insert(MoviesContract.FavMoviesEntry.CONTENT_URI, movieValues);
             if (uri != null) {
-                Toast.makeText(getBaseContext(), "Movie saved", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getBaseContext(), getString(R.string.movie_saved), Toast.LENGTH_SHORT).show();
             }
         } catch (android.database.SQLException exception) {
         }
