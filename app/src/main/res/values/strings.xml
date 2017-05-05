@@ -12,4 +12,6 @@
     <string name="menu_item_favs">Favourites</string>
     <string name="add_fav_button">Add</string>
     <string name="delete_fav_button">Delete</string>
+    <string name="wrong_video_message">This video could not be played</string>
+    <string name="title_activity_reviews">ReviewsActivity</string>
 </resources>

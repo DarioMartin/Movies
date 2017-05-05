@@ -7,10 +7,9 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.fasttrack.android.movies.adapters.VideosAdapter;
 import com.fasttrack.android.movies.models.MovieVideos;
 
 import java.util.List;
@@ -25,6 +24,8 @@ public class VideosModule extends LinearLayout {
     private static final String YOUTUBE = "YouTube";
 
     private LinearLayout videoList;
+    private List<MovieVideos.TMDBVideo> videos;
+
     private OnClickListener onVideoClickListener = new OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -39,12 +40,12 @@ public class VideosModule extends LinearLayout {
                 }
                 if (baseUrl != null) {
                     getContext().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(baseUrl + videos.get(position).getKey())));
+                } else {
+                    Toast.makeText(getContext(), getContext().getString(R.string.wrong_video_message), Toast.LENGTH_SHORT).show();
                 }
             }
         }
     };
-
-    private List<MovieVideos.TMDBVideo> videos;
 
     public VideosModule(Context context) {
         super(context);

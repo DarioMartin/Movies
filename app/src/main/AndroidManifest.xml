@@ -28,9 +28,14 @@
             android:theme="@style/AppTheme.NoActionBar" />
 
         <provider
-            android:name="com.fasttrack.android.movies.data.MoviesContentProvider"
+            android:name=".data.MoviesContentProvider"
             android:authorities="com.fasttrack.android.movies"
             android:exported="false" />
+
+        <activity
+            android:name=".views.ReviewsActivity"
+            android:label="@string/title_activity_reviews"
+            android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 
 </manifest>
