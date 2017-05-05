@@ -122,7 +122,7 @@ public class Movie implements Parcelable {
     }
 
     public String getPoster() {
-        return BASE_IMAGE_URL + "/original/" + poster;
+        return poster;
     }
 
     public String getSmallPoster() {

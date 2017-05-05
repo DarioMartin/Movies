@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container"
     android:layout_width="match_parent"
@@ -8,8 +8,19 @@
     tools:context="com.fasttrack.android.movies.views.MainActivity">
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/moviesRecyclreView"
+        android:id="@+id/movies_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-</LinearLayout>
+    <TextView
+        android:id="@+id/no_content_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_margin="24dp"
+        android:gravity="center"
+        android:text="I'm sorry but there are no movies to show you"
+        android:textSize="24sp"
+        android:visibility="gone" />
+
+</RelativeLayout>

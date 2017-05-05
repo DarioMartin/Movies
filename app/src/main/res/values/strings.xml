@@ -5,4 +5,15 @@
     <string name="title_activity_details">DetailsActivity</string>
     <string name="relase_date_title">Relase date</string>
     <string name="rating_title">Rating</string>
+    <string name="review_item_title">Review by %s</string>
+    <string name="videos_module_title">Videos</string>
+    <string name="reviews_module_title">Reviews</string>
+    <string name="show_all">Show all</string>
+    <string name="menu_item_favs">Favourites</string>
+    <string name="add_fav_button">Add</string>
+    <string name="delete_fav_button">Delete</string>
+    <string name="wrong_video_message">This video could not be played</string>
+    <string name="title_activity_reviews">ReviewsActivity</string>
+    <string name="movie_deleted">Movie deleted</string>
+    <string name="movie_saved">Movie saved</string>
 </resources>

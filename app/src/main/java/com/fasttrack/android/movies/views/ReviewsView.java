@@ -1,9 +1,8 @@
 package com.fasttrack.android.movies.views;
 
 
-import android.database.Cursor;
-
 import com.fasttrack.android.movies.models.Movie;
+import com.fasttrack.android.movies.models.MovieReviews;
 
 import java.util.List;
 
@@ -11,9 +10,6 @@ import java.util.List;
  * Created by dariomartin on 3/4/17.
  */
 
-public interface MainView {
-    void showMovies(List<Movie> movies);
-
-    void showDBMovies();
-
+public interface ReviewsView {
+    void showReviews(List<MovieReviews.TMDBReview> reviews);
 }
